@@ -21,58 +21,64 @@ signed main() {
         cin >> numbers[i];
     }
 
+    int ans = 0;
+
     // Just to verify input was read correctly
     //cout << "n = " << n << ", x = " << x << endl;
     //cout << "Numbers: ";
-    multimap<int, int> my_set;
+    multimap<int, int> my_map;
 
     sort(numbers.rbegin(), numbers.rend());
     for (int num : numbers) {
-        //cout << num << " ";
+        //cout << "--- " << num << " " << endl;
 
-        if (my_set.empty()) {
-            my_set.insert(std::pair<int,int>(num, 1));
+        if (my_map.empty()) {
+            my_map.insert(std::pair<int,int>(x - num, 1));
             continue;
         }
 
+        /*
         int rem = x - num;
         if (rem > num) {
             rem = num;
         }
-        auto it = my_set.lower_bound(rem);
-        if (it != my_set.end()) {
-            auto nv = it->first + num;
+        */
+        auto it = my_map.lower_bound(num);
+        if (it != my_map.end()) {
+            auto nv = it->first - num;
             int count = it->second;
             //cout << endl << "num: " << num << ", nv: " << nv << ", x: " << x << endl;
-            if (nv <= x && count < 2) { 
+            if (nv >= 0 && count < 2) { 
                 
-                //cout << "my_set before erase... size() " << my_set.size() << ", *it: " << *it << endl;
-                my_set.erase(it);
-                //cout << "my_set after erase... size() " << my_set.size() << endl;
-                my_set.insert(std::pair<int,int>(nv, count+1));
-                //cout << "my_set after replace... size() " << my_set.size() << ", nv: " << nv << endl;
+                //cout << "my_map before erase... size() " << my_map.size() << ", *it: " << *it << endl;
+                my_map.erase(it);
+                ans += 1;
+                //cout << "deleting value of " << nv << " from map as it reached count 2" << endl;
+                //cout << "my_map after erase... size() " << my_map.size() << endl;
+                //my_map.insert(std::pair<int,int>(nv, count+1));
+                //cout << "my_map after replace... size() " << my_map.size() << ", nv: " << nv << endl;
             } else {
-                my_set.insert(std::pair<int,int>(num, 1));
-                //cout << "my_set after inserting(path 1)... size() " << my_set.size() << ", num: " << num << endl;
+                my_map.insert(std::pair<int,int>(x - num, 1));
+                //cout << "my_map after inserting(path 1)... size() " << my_map.size() << ", nv: " << x - num << endl;
             }
         } else {
-            my_set.insert(std::pair<int,int>(num, 1));
-            //cout << "my_set after inserting(path 2)... size() " << my_set.size() << ", num: " << num << endl;
+            my_map.insert(std::pair<int,int>(x - num, 1));
+            //cout << "my_map after inserting(path 2)... size() " << my_map.size() << ", nv : " << x - num << endl;
         }
-        //my_set.insert(num);
+        //my_map.insert(num);
     }
     //cout << endl;
 
 
-    /*    
+    /*
     cout << "set: " << endl;
-    for (const auto& [x, val] : my_set) {
+    for (const auto& [x, val] : my_map) {
         cout << x << " ";
     }
     cout << endl;
     */
-    
 
-    cout << my_set.size() << endl;
+    ans += my_map.size();
+    cout << ans << endl;
     return 0;
 }
