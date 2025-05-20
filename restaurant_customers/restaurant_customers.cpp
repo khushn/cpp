@@ -14,7 +14,8 @@ int main() {
     for (int i = 0; i < n; ++i) {
         int a, b;
         cin >> a >> b;
-        pairs.emplace_back(a, b);  // Store each pair
+        pairs.emplace_back(a, 1);  // add +1 for arrival 
+        pairs.emplace_back(b, -1); // set -1 for departure
     }
 
     sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
@@ -22,35 +23,23 @@ int main() {
     });
 
     
+    /*
     // Optional: print the pairs to verify input
     cout << "Read " << n << " pairs:\n";
     for (const auto& p : pairs) {
         cout << p.first << " " << p.second << "\n";
     }
+    */
     
 
     int ans = 0;
-    for (int i=0; i<n; i++) {
-        auto cur = pairs[i];
-        int cur_leave_time = cur.second;
-        int beg = i+1;
-        int end = n;
-        while (beg < end) {
+    int cur_custs = 0;
 
-            int mid = (beg + end) / 2;
-            cout << "beg: " << beg << ", end: " << end << ", mid: " << mid << endl;
-            cout << "cur_leave_time: " << cur_leave_time << ", pairs[mid].first: " << pairs[mid].first << endl;
-            if (cur_leave_time > pairs[mid].first) {
-                beg = mid + 1;
-            } else {
-                end = mid;
-            }
-
-        }
-
-        int tmp = beg - i;
-        if (tmp > ans) {
-            ans = tmp;
+    for (int i=0; i<2*n; i++) {
+        auto cur = pairs[i].second;
+        cur_custs += cur;
+        if (cur_custs > ans) {
+            ans = cur_custs;
         }
 
     }
