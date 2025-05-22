@@ -6,6 +6,14 @@ using namespace std;
 
 #define int long long 
 
+/*
+I used the easier version of the problem approach or pre compute. 
+For each replacememt pair, I just compute the spans broken or reduced. Considering 
+the top and below number indices of each pair. 
+Also had to use a second vector, for the tests to pass within 1 second limit.
+
+*/
+
 signed main() {
 
 	int n, m;
