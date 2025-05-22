@@ -18,9 +18,15 @@ signed main() {
 		mp.insert(pair(vec[i], i));
 	}
 
+
+	// use another vector instead of costly map (using map in later loop gave TLE)
+	vector<int> vec2(n+1);
+
 	int num_spans = 0;
 	int prev_ind = -1;
 	for (auto it = mp.rbegin(); it != mp.rend(); ++it) {
+
+		vec2[it->first] = it->second;
 
 		//cout << "it->second: " << it->second << endl;
 		if (num_spans == 0) {
@@ -88,7 +94,7 @@ signed main() {
 
 		// check num1's above and below
 		if (num1 > 1) {
-			int topind = mp[num1-1];
+			int topind = vec2[num1-1];
 			//cout << "num1 topind: " << topind << endl;
 			if (topind < a && topind > b)
 				num_spans++;
@@ -109,7 +115,7 @@ signed main() {
 
 		} else {
 
-			int botind = mp[num1+1];
+			int botind = vec2[num1+1];
 			//cout << "num1 botind: " << botind << endl;
 			if (botind > a && botind < b)
 				num_spans++;
@@ -119,7 +125,7 @@ signed main() {
 			//cout << "num_spans (after bottom check for num1): " << num_spans << endl;
 			
 			// ensure not contigous
-			int topind = mp[num2-1];
+			int topind = vec2[num2-1];
 			//cout << "num2 topind: " << topind << endl;
 			if (topind < b && topind > a)
 				num_spans++;
@@ -131,7 +137,7 @@ signed main() {
 		}
 
 		if (num2 < n) {
-			int botind = mp[num2+1];
+			int botind = vec2[num2+1];
 			//cout << "num2 botind: " << botind << endl;
 			if (botind > b && botind < a)
 				num_spans++;
@@ -141,8 +147,8 @@ signed main() {
 			//cout << "num_spans (after bottom check for num2): " << num_spans << endl;
 		}
 
-		mp[num1] = b;
-		mp[num2] = a;
+		vec2[num1] = b;
+		vec2[num2] = a;
 		//cout << "before swap, a: " << a << ", b: " << b << endl;
 		int t = vec[b];
 		vec[b] = vec[a];
