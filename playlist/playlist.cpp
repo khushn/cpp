@@ -1,17 +1,27 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <map>
 
 using namespace std;
 
 #define int long long
+
+/*
+Algo: Just store all the song ids in a map, with value as index. 
+On repeat occurance, do calculations. Also in the end. 
+
+First tried with hashmap (unordered_map), but it failed in the 19th test case as constant time is very high, 
+and data was given such that buckets are not reused. 
+
+Switched to tree map (just map in C++) and it worked. 19th test case passed in .19 seconds!
+*/
 
 signed main() {
 	int n;
 	cin >> n;
 
 	vector<int> vec(n);
-	unordered_map<int, int> hashmap;
+	map<int, int> hashmap;
 	int max_uniq = 0;
 	int uniq_beg_ind = 0;
 	for(int i=0; i<n; i++) {
