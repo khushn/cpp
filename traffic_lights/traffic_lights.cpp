@@ -10,10 +10,14 @@ void debugprint(map<int, int> & mp);
 
 signed main() {
 
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+
+
 	int x, n;
 	cin >> x >> n;
 
-	string concat_output;
+	//string concat_output;
 
 	map<int, int> mp;
 	multiset<int> myset;
@@ -44,10 +48,11 @@ signed main() {
 		myset.insert(part1);
 
 		//debugprint(mp);
-		//cout << *myset.rbegin() << " ";
-		concat_output += to_string(*myset.rbegin()) + " ";
+		cout << *myset.rbegin() << " ";
+		//concat_output += to_string(*myset.rbegin()) + " ";
 	}
-	cout << concat_output << endl;
+	cout << endl;
+	//cout << concat_output << endl;
 
 }
 
