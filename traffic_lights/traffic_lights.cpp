@@ -13,6 +13,8 @@ signed main() {
 	int x, n;
 	cin >> x >> n;
 
+	string concat_output;
+
 	map<int, int> mp;
 	multiset<int> myset;
 	mp[x] = x;
@@ -42,9 +44,10 @@ signed main() {
 		myset.insert(part1);
 
 		//debugprint(mp);
-		cout << *myset.rbegin() << " ";
+		//cout << *myset.rbegin() << " ";
+		concat_output += to_string(*myset.rbegin()) + " ";
 	}
-	cout << endl;
+	cout << concat_output << endl;
 
 }
 
