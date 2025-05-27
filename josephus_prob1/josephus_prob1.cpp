@@ -4,45 +4,55 @@ using namespace std;
 
 #define int long long
 
+// Node structure
+struct Node {
+  int v;
+  Node* next;
+};
+
 signed main() {
 	int n;
 	cin >> n;
 
-	int start1 = 1;
-	int start2 = 3;
-
-	int start = 2;
-	int jump = 2;
-
-	string out_str = "";
-
-	while (start <= n) {
-		cout << "while loop, start: " << start << ", jump: " << jump << endl;
-		int i = start;
-		for (; i<=n; i+=jump) {
-			cout << i << " ---" << endl;
-			out_str += to_string(i) + " ";
+	Node *beg = NULL;
+	Node *prev = NULL;
+	for(int i=1; i<=n; i++) {		
+		Node *n = new Node();
+		n->v = i;
+		if (i==1)
+			beg = n;
+		else {
+			prev->next = n;
 		}
-
-		cout << "debug, i: " << i << ", n: " << n << ", jump: " << jump << endl;
-		if (i - n < jump) {			
-			// use 1st start no			
-			start = start1;
-			start1 = start2;
-			start2 = start2 + 2 * jump;
-		} else {
-			// use 2nd start no
-			start = start2;
-			start2 = start + jump;
-		}
-		jump *= 2;
-		cout << "while loop end, start1: " << start1 << ", start2: " << start2 << ", start: " << start << ", jump: " << jump << endl;
+		prev = n;
 	}
 
-	if (start1 <= n)
-		out_str += to_string(start1) + " ";
-	else if(start2 <=n)
-		out_str += to_string(start2) + " ";
 
-	cout << out_str << endl;
+	// cyclic
+	if (prev != beg) // edge case
+		prev->next = beg;
+	else {
+		cout << beg->v << endl;
+		return 0;
+	}
+
+	Node *nd = beg;
+
+	while (nd!= NULL) {
+
+		if (nd->next == NULL)
+			break;
+
+		cout << nd->next->v << " ";
+		// cout << nd->v << " ";
+
+		if (nd != nd->next->next)
+			nd->next = nd->next->next;
+		else {
+			cout << nd->v << " ";
+			nd->next = NULL;
+		}
+		nd = nd->next;
+	}
+	cout << endl;
 }
