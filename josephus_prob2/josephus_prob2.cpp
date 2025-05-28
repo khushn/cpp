@@ -9,6 +9,11 @@ using namespace __gnu_pbds;
 
 #define int long long
 
+/*
+Ordered set blog on codeforces:
+https://codeforces.com/blog/entry/123624
+*/
+
 template<class T> using ordered_multiset = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 
