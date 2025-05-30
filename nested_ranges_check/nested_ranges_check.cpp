@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <map>
 #include <set>
 #include <vector>
@@ -27,37 +28,6 @@ struct Node {
 
 };
 
-struct NodeComparator {
-    bool operator() (const Node* lhs, const Node* rhs) const {
-
-	if (lhs->v < rhs->v) 
-		return true;
-
-	if (lhs->v > rhs->v)
-		return false;
-
-
-	// we come here only when v values are same
-	if (lhs->start && rhs->start)
-		return lhs->v1 < rhs->v1;
-
-	if (!lhs->start && !rhs->start) {
-		// for end same choose later start to go ahead	
-		return lhs->v1 > rhs->v1;
-	}
-
-	
-	if (lhs->start && !rhs->start)
-		return false;
-	
-	if (!lhs->start && rhs->start)
-			return true;
-	
-
-	return false;
-	}
-
-};
 
 
 
@@ -67,65 +37,62 @@ signed main() {
 	cin >> n;
 
 
-	set<Node *, NodeComparator> ndset;
-	map<int, Node *> mp;
+	vector<Node *> vec(n);
 	for (int i=0; i<n; i++) {
 		int a, b;
 		cin >> a >> b;
-		Node *na = new Node(i, a, true, b);
-		Node *nb = new Node(i, b, false, a);
-		ndset.insert(na);
-		mp[i] = na;
-		ndset.insert(nb);
+		Node *n = new Node(i, a, true, b);
+		vec[i] = n;
 	}
 
+
+	
+	sort(vec.begin(), vec.end(), [](Node* lhs, Node* rhs) {
+	    return lhs->v < rhs->v;
+	});
+
 	/*
-	cout << " printing sorted list --- " << ndset.size() << "----" << endl;
-	for (auto n: ndset) {
+	cout << " printing sorted list --- " << vec.size() << "----" << endl;
+	for (auto n: vec) {
 		n->print();
 	}
 
 	cout << "---------- " << endl;
 	*/
 
+	/*
+	sort(vec.begin(), vec.end(), [](Node* lhs, Node* rhs) {
+
+		
+	    if (lhs->v <= rhs->v && lhs->v1 >= rhs->v1)
+	        return true;
+	    // Ensure the opposite is false, so sort has consistent decisions
+	    if (rhs->v <= lhs->v && rhs->v1 >= lhs->v1)
+	        return false;
+	     
+	    // Fallback: sort by a ascending
+	    return (lhs->v1 - lhs->v < rhs->v1 - rhs->v);
+	});
+	*/
+
+	sort(vec.begin(), vec.end(), [](Node* lhs, Node* rhs) {
+	    return lhs->v1 > rhs->v1;
+	});
+
+	
+	cout << " printing sorted list --- " << vec.size() << "----" << endl;
+	for (auto n: vec) {
+		n->print();
+	}
+
+	cout << "---------- " << endl;
+	
+
 
 	vector<int> has_others(n);
 	vector<int> is_inside(n);
 
-	set<int> container;
-	for (auto n: ndset) {
-		// n->print();
-		if (n->start) {			
-			container.insert(n->id);
-			//cout << "insert id: " << n->id << ", size: " << container.size() << endl;
-		} else {
-			//vector<int> tvec;
-			for (auto cid: container) {
-				if (cid != n->id) {
-					//cout << "looking in map for id: " << cid << endl;
-					Node * c = mp[cid];
-					//cout << "in map, c->id: " << cid << ", c: " << c << endl;
-					
-					if (c->v <= n->v1) {
-						//cout << "n->id: " << n->id << ", cid: " << cid << endl;
-						is_inside[n->id] = 1;
-
-						has_others[cid] = 1;
-						//tvec.push_back(cid);
-						//cout << "has_others, cid: " << cid << ", value: " << has_others[cid] << endl;
-					}
-				}
-			}
-
-			/*
-			for (int tid: tvec) {
-				container.erase(tid);
-			}
-			*/
-			container.erase(n->id);
-			//cout << "erasing id: " << n->id << ", size: " << container.size() << endl;
-		}
-	}
+	
 
 	for (int i=0; i<n; i++) {
 		cout << has_others[i] << " ";
