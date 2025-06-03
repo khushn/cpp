@@ -6,6 +6,11 @@ using namespace std;
 
 #define int long long
 
+
+/**
+Implementation of binary indexed tree (or Fenwick tree), 
+which is needed to solve this problem
+**/
 class BIT {
 
 public: 
