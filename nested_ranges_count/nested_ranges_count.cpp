@@ -29,6 +29,10 @@ struct Node {
 /**
 Implementation of binary indexed tree (or Fenwick tree), 
 which is needed to solve this problem
+
+For part 2:
+This was a very easy change to the part 1 problem,
+ as I aleady used a Fenwick (BIT) tree to solve that one. Just add counts instead of setting 1.
 **/
 class BIT {
 
