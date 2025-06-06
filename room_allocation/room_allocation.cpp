@@ -41,6 +41,9 @@ signed main() {
 
 	//cout << "pass 1: custs.size(): " << custs.size() <<  endl;
 
+	// NOTE:
+	// This was easier than previous. Faced issue in sort not being balanced. 
+	// Any specific check for lhs with rhs need to be made the other way also. Else gives issues
 	
 	sort(custs.begin(), custs.end(), [](cust *lhs, cust * rhs) {
 
