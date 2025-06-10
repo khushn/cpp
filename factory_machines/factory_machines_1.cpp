@@ -31,9 +31,29 @@ signed main() {
 			mymap[v] = 1;
 	}
 
+	if (n == 1) {
+		auto it = mymap.begin();
+		vector<int> v = it->first;
+		int ans = t * v[1];
+		cout << ans << endl;
+		return 0;
+	}
+
+	if (mymap.size() == 1) {
+		auto it = mymap.begin();
+		vector<int> v = it->first;
+		int count = it->second;
+		int mul = t / count;
+		if (t%count != 0)
+			mul++;
+		int ans = mul * v[1];
+		cout << ans << endl;
+		return 0;
+	}
+
 	
 	// debug print
-	
+	/*
 	cout << "debug print " << endl;
 	for(auto it = mymap.begin(); it != mymap.end(); it++) {
 		vector<int> v = it->first;
@@ -42,67 +62,59 @@ signed main() {
 		cout << " -> " << it->second << endl;
 	}
 	cout << "-------" << endl;
+	*/
 
 
-
-	int minh = 0;
-	bool first = true;
-	int n1, d1 = 1;
-	for(auto it = mymap.begin(); it != mymap.end(); it++) {
+	int mint = 0;
+	while ( t > 0) {
+	
+		auto it = mymap.begin();
 		vector<int> v = it->first;
-		int h = v[1];
+		// print_vec(v);
+
 		int count = it->second;
+		//mymap.erase(it);
 
-		if (first) {
-			d1 = h;
-			n1 = count;
-			int num = t / n1;
-			if (t % n1 != 0)
-				num++;
-			minh = num * d1;
-			first = false;
-			cout << "n1: " << n1 << endl;
-			cout << "d1: " << d1 << endl;
-			cout << "----" << endl;
-			continue;
-		}
-
-		cout << "n1: " << n1 << endl;
-		cout << "d1: " << d1 << endl;
-
-
-		int n2 = count;
-		int d2 = h;
-
-		int denom = d1 * d2;
-		int numer = n1 * d2 + n2 * d1;
 		
-		cout << "numer: " << numer << endl;
-		cout << "denom: " << denom << endl;
+		it++;
+		vector<int> v2 = it->first;
+		// print_vec(v2);
+
+		int diff = v2[0] - v[2];
+		//if (v2[2] == 0) 
+		//	diff = v2[1] - v[2];
+
+		int nump = diff / v[1];
+
+		if (nump * count > t) {
+			nump = t / count;
+			if (t% count != 1)
+				nump++;
+
+			if (nump == 0)
+				nump++;
+		}
+		
+
+		int incr = nump * v[1];
+		int new_height = v[2] + incr;
+
+		if ( new_height > mint)
+			mint = new_height;
+
+		v[0] += incr;
+		v[2] += incr;
+
+		mymap.erase(mymap.begin());
+		mymap[v] = count;
+
+		t -= nump * count;
+		// cout << "t: " << t << endl;
+	}
 
 	
-		int num_mul = n1 * denom / d1;
-		int denom_div = numer;
+	//cout << "coming here " << endl;
 
-		cout << "num_mul: " << num_mul << endl;
-		cout << "denom_div: " << denom_div << endl;
-
-		minh *= num_mul;
-
-		minh /= denom_div;
-
-		if (minh % denom_div != 0)
-			minh++;
-
-		cout << "minh: " << minh << endl;
-		cout << "----" << endl;
-
-
-		n1 = numer;
-		d1 = denom;
-			
-
-	}
 	
 	// debug print
 	/*
@@ -117,7 +129,7 @@ signed main() {
 
 
 
-	cout << minh << endl;
+	cout << mint << endl;
 
 }
 
