@@ -1,4 +1,5 @@
 #include <iostream>
+#include <climits>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -45,81 +46,23 @@ signed main() {
 
 
 
-	int minh = 0;
-	bool first = true;
-	int n1, d1 = 1;
+	int minh = INT_MAX;
+	float div = 0.0;
 	for(auto it = mymap.begin(); it != mymap.end(); it++) {
 		vector<int> v = it->first;
-		int h = v[1];
-		int count = it->second;
-
-		if (first) {
-			d1 = h;
-			n1 = count;
-			float tmp = (1.0 * d1) / (1.0 * n1);
-			cout << "initially multiplying t by " << tmp << endl;
-			minh = t * tmp;
-
-			first = false;
-			cout << "n1: " << n1 << endl;
-			cout << "d1: " << d1 << endl;
-			cout << "minh: " << minh << endl;
-			cout << "----" << endl;
+		float h = v[1];
+		if (h >= minh) {
+			cout << "ignoring h: " << h << " as more than minh: " << minh << endl;
 			continue;
 		}
-
-		cout << "n1: " << n1 << endl;
-		cout << "d1: " << d1 << endl;
-
-
-		int n2 = count;
-		int d2 = h;
-
-		if (h >=minh) {
-			cout << "ignoring as h: " << h << " greater than (or equal to) minh: " << minh << endl;
-			continue;
-		}
-
-		int denom = d1 * d2;
-		int numer = n1 * d2 + n2 * d1;
-		
-		cout << "numer: " << numer << endl;
-		cout << "denom: " << denom << endl;
-
-	
-		int num_mul = n1 * (denom / d1);
-		int denom_div = numer;
-
-		cout << "num_mul: " << num_mul << endl;
-		cout << "denom_div: " << denom_div << endl;
-
-		float tmp = (1.0 * num_mul) / (1.0 * denom_div);
-		cout << "minh multiplied with : " << tmp << endl;
-
-		minh *= tmp;
-
+		float count = it->second;
+		div += count / h;
+		cout << "div: " << div << endl;
+		minh = t / div;
 		cout << "minh: " << minh << endl;
-		cout << "----" << endl;
-
-
-		n1 = numer;
-		d1 = denom;
-			
-
 	}
-	
-	// debug print
-	/*
-	for(auto it = mymap.begin(); it != mymap.end(); it++) {
-		vector<int> v = it->first;
-		print_vec(v);
-	}
-	cout << endl;
-	*/
-	
-	
 
-
+	
 
 	cout << minh << endl;
 
