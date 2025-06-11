@@ -56,13 +56,14 @@ signed main() {
 		if (first) {
 			d1 = h;
 			n1 = count;
-			int num = t / n1;
-			if (t % n1 != 0)
-				num++;
-			minh = num * d1;
+			float tmp = (1.0 * d1) / (1.0 * n1);
+			cout << "initially multiplying t by " << tmp << endl;
+			minh = t * tmp;
+
 			first = false;
 			cout << "n1: " << n1 << endl;
 			cout << "d1: " << d1 << endl;
+			cout << "minh: " << minh << endl;
 			cout << "----" << endl;
 			continue;
 		}
@@ -74,6 +75,11 @@ signed main() {
 		int n2 = count;
 		int d2 = h;
 
+		if (h >=minh) {
+			cout << "ignoring as h: " << h << " greater than (or equal to) minh: " << minh << endl;
+			continue;
+		}
+
 		int denom = d1 * d2;
 		int numer = n1 * d2 + n2 * d1;
 		
@@ -81,18 +87,16 @@ signed main() {
 		cout << "denom: " << denom << endl;
 
 	
-		int num_mul = n1 * denom / d1;
+		int num_mul = n1 * (denom / d1);
 		int denom_div = numer;
 
 		cout << "num_mul: " << num_mul << endl;
 		cout << "denom_div: " << denom_div << endl;
 
-		minh *= num_mul;
+		float tmp = (1.0 * num_mul) / (1.0 * denom_div);
+		cout << "minh multiplied with : " << tmp << endl;
 
-		minh /= denom_div;
-
-		if (minh % denom_div != 0)
-			minh++;
+		minh *= tmp;
 
 		cout << "minh: " << minh << endl;
 		cout << "----" << endl;
