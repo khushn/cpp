@@ -8,6 +8,13 @@ using namespace std;
 
 void print_vec(vector<int> v);
 
+/*
+
+This intuition I had, after working out a few test cases that just 
+by sorting on duration is enough. And it was!
+
+*/
+
 signed main() {
 
 	int n;
