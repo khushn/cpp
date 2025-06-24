@@ -40,14 +40,14 @@ signed main() {
 			auto it = mymap.find(sum);
 			if (it == mymap.end()) {
 
-				vector<int> tmp(2);
+				vector<int> tmp(4);
 				tmp[0] = vec[i].second;
 				tmp[1] = vec[j].second;
 				mymap[sum] = tmp;
 			} else {
 				vector<int> tvec = it->second;
-				tvec.push_back(vec[i].second);
-				tvec.push_back(vec[j].second);
+				tvec[2] = vec[i].second;
+				tvec[3] = vec[j].second;
 				mymap[sum] = tvec;
 			}
 		}
@@ -62,6 +62,7 @@ signed main() {
 		print_vec(vec1);
 		cout << "--" << endl;
 		*/
+		
 
 		int first = vec1[0];
 		int second = vec1[1];
