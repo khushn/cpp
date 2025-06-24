@@ -31,9 +31,7 @@ signed main() {
 
 	map<int, vector<int>> mymap;
 	for(int i=0; i<n; i++) {
-		for (int j=0; j<n; j++) {
-			if (i == j)
-				continue;
+		for (int j=i+1; j<n; j++) {
 
 			int sum = vec[i].first + vec[j].first;
 
@@ -43,6 +41,8 @@ signed main() {
 				vector<int> tmp(4);
 				tmp[0] = vec[i].second;
 				tmp[1] = vec[j].second;
+				tmp[2] = -1;
+				tmp[3] = -1;
 				mymap[sum] = tmp;
 			} else {
 				vector<int> tvec = it->second;
@@ -54,14 +54,16 @@ signed main() {
 	}
 
 	for (const auto & it1: mymap) {
-		int rem = x - it1.first;
+		int sum1 = it1.first;
+		int rem = x - sum1;
 		vector<int> vec1 = it1.second;
 
 		/*
-		cout << it1.first << " ";
+		cout << sum1 << " ";
 		print_vec(vec1);
 		cout << "--" << endl;
 		*/
+	
 		
 
 		int first = vec1[0];
@@ -72,8 +74,14 @@ signed main() {
 			vector<int> vec2 = it->second;
 			int v2l = vec2.size();
 
+			if (rem != sum1)
+				v2l = 2;
+
 			// we need to pick from the end, to avoid clash
 			int third = vec2[v2l-2];
+			if (third == -1) {
+				continue;
+			}
 			int fourth = vec2[v2l-1];
 			
 
