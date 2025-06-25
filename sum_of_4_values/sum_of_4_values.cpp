@@ -74,15 +74,15 @@ signed main() {
 			vector<int> vec2 = it->second;
 			int v2l = vec2.size();
 
-			if (rem != sum1)
-				v2l = 2;
-
 			// we need to pick from the end, to avoid clash
-			int third = vec2[v2l-2];
-			if (third == -1) {
-				continue;
-			}
+			int third = vec2[v2l-2];			
 			int fourth = vec2[v2l-1];
+
+			// but may have to go to prev one if needed
+			if (third == -1) {
+				third = vec2[0];			
+				fourth = vec2[1];
+			}
 			
 
 			if (third != first && third != second && fourth != first && fourth != second) {
