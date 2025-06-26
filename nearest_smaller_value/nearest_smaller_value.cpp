@@ -27,10 +27,10 @@ signed main() {
 		}
 		
 		mp[v] = i;
-		auto end_it = mp.end();
-		end_it--;
-		end_it->second = i;
-
+		auto del_it = mp.lower_bound(v);
+		// to delete all the values greator than v (as their index would be lower, and we don't want them)
+		del_it++;
+		mp.erase(del_it, mp.end());
 	}
 
 
