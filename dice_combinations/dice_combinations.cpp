@@ -18,9 +18,25 @@ signed main() {
 
 	dp.resize(n+1);
 
-	int ans = recurse(n);
-	cout << ans << endl;
 
+
+	//int ans = recurse(n);
+	//cout << ans << endl;
+
+	// building an iterative solution
+	dp[0] = 1;
+	for (int i=0; i<=n; i++) {
+		for (int j=1; j<=6; j++) {
+			if (i+j <= n) {
+				dp[i+j] += dp[i];
+				dp[i+j] %= mod;
+				// cout << (i+j) << " : " << dp[i+j] << endl;
+			}
+
+		}
+	}
+
+	cout << dp[n] << endl;
 }
 
 
