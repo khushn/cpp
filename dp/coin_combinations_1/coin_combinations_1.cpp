@@ -5,6 +5,8 @@ using namespace std;
 
 #define int long long
 
+int mod = 1e9 + 7;
+
 signed main() {
 	int n, x;
 	cin >> n >> x;
@@ -24,7 +26,7 @@ signed main() {
 				continue;
 			
 			m[i] += m[i-c];
-
+			m[i] %= mod;
 			
 
 		}
