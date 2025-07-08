@@ -26,9 +26,9 @@ signed main() {
 				continue;
 			
 			m[i] += m[i-c];
-			m[i] %= mod;
+			if (m[i] >= mod)
+				m[i] -= mod;
 			
-
 		}
 	}
 
