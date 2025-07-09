@@ -22,14 +22,14 @@ signed main() {
 
 		if (i< 10) {
 			v[i] = 1;
-			cout << "v[" << i << "] = " << v[i] << endl;
+			//cout << "v[" << i << "] = " << v[i] << endl;
 			continue;
 		}
 
 		int min = INT_MAX;
 		for (int num=i; num>0; num/=10) {
 			int x = num%10;
-			cout << "x: " << x << endl;
+			//cout << "x: " << x << endl;
 			if (x == 0)
 				continue;
 
@@ -39,7 +39,7 @@ signed main() {
 		}
 		v[i] = min;
 
-		cout << "v[" << i << "] = " << v[i] << endl;
+		//cout << "v[" << i << "] = " << v[i] << endl;
 	}
 
 	cout << v[n] << endl;
