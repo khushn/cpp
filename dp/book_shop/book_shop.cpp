@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -20,40 +21,49 @@ signed main() {
 	// dp array of total money (tm)
 	vector<int> tm(x+1);
 
-	// book index added at a specific money sum
-	vector<int> book_added(x+1);
-	book_added[0] = -1;
-	for(int i=1; i<=x; i++) {
-		tm[i] = tm[i-1];
-		book_added[i] = book_added[i-1];
-		for (int j=0; j<n; j++) {
-			int m = h[j];
-			if (i-m < 0) 
+	for(int i=0; i<n; i++) {
+		// avoid dups
+		set<int> dup_check;
+
+		int m = h[i];
+		int p = s[i];
+		//cout << "m: " << m << ", p: " << p << endl;
+		if (p > tm[m]) {
+			tm[m] = p;
+			dup_check.insert(m);
+		}
+
+		
+
+		for(int j=m+1; j<=x; j++) {
+
+			int r = j - m;
+			if (dup_check.find(r) != dup_check.end())
 				continue;
 
-			int new_val = tm[i-m] + s[j];
-			if (new_val > tm[i]) {
-				// check before adding, if index 'j' book is already in this path
-				int y = i-m;
-				bool dup_book = false;
-				while (y>0) {
-					int j2 = book_added[y];
-					if ( j2 == j) {
-						// dup book
-						dup_book = true;
-						break;
-					}
-					y -= h[j2];
-				}
-
-				if (!dup_book) {
-					tm[i] = new_val;
-					book_added[i] = j;
-				}
+			int p0 = tm[r];
+			if (p0 > 0 && p0 + p > tm[j]) {
+				tm[j] = p0+p;
+				dup_check.insert(j);
 			}
+
 		}
-		cout << "tm[" << i << "] = " << tm[i] << endl;
-		cout << "book_added[" << i << "] = " << book_added[i] << endl;
+
+		/*
+		for (int k=1; k<= x; k++)
+			cout << "tm[" << k << "] = " << tm[k] << endl;
+
+		cout << "----" << endl;
+		*/
+
+
+		dup_check.clear();
+	}
+
+	// ensure higher money position is not less than its prev position
+	for (int i=1; i<=x; i++) {
+		if (tm[i] < tm[i-1])
+			tm[i] = tm[i-1];
 	}
 
 	cout << tm[x] << endl;
