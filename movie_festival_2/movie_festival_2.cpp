@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -11,6 +12,10 @@ Today morning the solution came to me (as it often does at a specific place and 
 Need to just sort based on movie end times. 
 And allot to all prople in a greedy way. If a movie can't be placed, move to next movie
 After assigning the movie to one person move to the next person. 
+
+Another change, had to make:
+Store the current watcher end times in a map, and assign the watcher who has most recently finished.
+This gets all the test cases correct. 
 
 Time complexity: 
 Sorting : N(log(N)) and one look of N + K so O(N+K). N movies and K people
@@ -33,20 +38,36 @@ signed main() {
 
 	sort(vec.begin(), vec.end());
 
-	int cur_watcher = 0;
+	
 	// end time of the current movie they are watching
-	vector<int> watchers(k); 
+	// sorted so that, we can assign the latest end time to the 
+	// current movie to be assigned
+	multimap<int, int> watchers; 
+	for(int i=0; i<k; i++){
+		watchers.insert(make_pair(0, i));
+	}
+	
 	int num_watched = 0;
 	for(int i=0; i<n; i++) {
-		cout << vec[i].first << " : " << vec[i].second << endl;
+		// cout << vec[i].first << " : " << vec[i].second << endl;
 		int start = vec[i].second;
 		int end = vec[i].first;
-		if (start >= watchers[cur_watcher]) {
-			num_watched++;
-			watchers[cur_watcher] = end;
-			cur_watcher++;
-			cur_watcher = cur_watcher % k;
-		} 
+		auto it = watchers.lower_bound(start);
+
+		if (it == watchers.begin())
+			if (it->first != start)
+				continue;
+
+		if (it == watchers.end())
+			it--;
+		else if (it->first > start)
+			it--;
+
+		int watcher = it->second;
+		watchers.erase(it);
+		watchers.insert(make_pair(end, watcher));
+		num_watched++;
+		
 	}
 
 	cout << num_watched << endl;
