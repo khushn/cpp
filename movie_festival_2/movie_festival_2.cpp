@@ -21,6 +21,11 @@ Time complexity:
 Sorting : N(log(N)) and one look of N + K so O(N+K). N movies and K people
 N(log(N)) + O(N+K)
 
+Update after all test cases passed:
+I saw that the 'analysis' was same as my approach. Except:
+1. It uses multiset instead of multimap (I agree)
+2. It uses upper_bound() function instead of lower_bound (it makes code a bit simpler)
+
 
 */
 signed main() {
