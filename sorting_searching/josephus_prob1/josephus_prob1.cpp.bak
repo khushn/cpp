@@ -1,0 +1,54 @@
+#include <iostream>
+
+using namespace std;
+
+#define int long long
+
+// Node structure
+struct Node {
+  int v;
+  Node* next;
+};
+
+signed main() {
+	int n;
+	cin >> n;
+
+	int start1 = 1;
+	int start2 = 3;
+
+	int start = 2;
+	int jump = 2;
+
+	string out_str = "";
+
+	while (start <= n) {
+		cout << "while loop, start: " << start << ", jump: " << jump << endl;
+		int i = start;
+		for (; i<=n; i+=jump) {
+			cout << i << " ---" << endl;
+			out_str += to_string(i) + " ";
+		}
+
+		cout << "debug, i: " << i << ", n: " << n << ", jump: " << jump << endl;
+		if (i - n < jump) {			
+			// use 1st start no			
+			start = start1;
+			start1 = start2;
+			start2 = start2 + 2 * jump;
+		} else {
+			// use 2nd start no
+			start = start2;
+			start2 = start + jump;
+		}
+		jump *= 2;
+		cout << "while loop end, start1: " << start1 << ", start2: " << start2 << ", start: " << start << ", jump: " << jump << endl;
+	}
+
+	if (start1 <= n)
+		out_str += to_string(start1) + " ";
+	else if(start2 <=n)
+		out_str += to_string(start2) + " ";
+
+	cout << out_str << endl;
+}
