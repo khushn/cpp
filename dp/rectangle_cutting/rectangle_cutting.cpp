@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <climits>
 
 using namespace std;
 
@@ -16,24 +17,32 @@ signed main() {
 				continue;
 			}
 
-			int val = 0;
-			if (i > j) {
-				val = i/j;
-				int rem = i%j;
-				if ( rem == 0)
-					val--;
-				else 
-					val += dp[rem][j];			
-			} else {
-				val = j/i;
-				int rem = j%i;
-				if ( rem == 0)
-					val--;
-				else 
-					val += dp[i][rem];
+			if (i == 1) {
+				dp[i][j] = j - 1;
+				continue;
 			}
 
-			dp[i][j] = val;
+			if (j == 1) {
+				dp[i][j] = i - 1;
+				continue;
+			}
+
+			int min = INT_MAX;
+			// consider horizontal
+			for(int c=1; c<=i/2; c++) {
+				int v = dp[c][j] + dp[i-c][j] + 1; // plus 1 for the cut
+				if (v < min)
+					min = v;
+			}
+			
+			// consider vertical
+			for(int r=1; r<=j/2; r++) {
+				int v = dp[i][r] + dp[i][j-r] + 1; // plus 1 for the cut
+				if (v < min)
+					min = v;
+			}
+
+			dp[i][j] = min;
 		}
 	}
 
