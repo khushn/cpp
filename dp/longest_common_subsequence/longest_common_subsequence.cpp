@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <stack>
 
 using namespace std;
 
@@ -54,21 +55,49 @@ signed main() {
 
 
 	// print the common sequence
-	int cur = 0;
-	for(int i=0; i<m; i++) {
-		int tmp = dp[n-1][i];
-		if (tmp > cur) {
-			cout << v2[i] << " ";
-			cur = tmp; 
-		}
-	}
+	// need to traverse from bottom right and put all matches in a stack
+	// match when diagonal less than present cell
+	stack<int> stk;
+	int num = dp[n-1][m-1];
 
-	cout << endl;
+	if (num == 0)
+		return 0;
 	
+	int r = n-1;
+	int c = m-1;
+	while (true) {
+		if (r-1 >= 0 && dp[r-1][c] == dp[r][c]) {
+			r = r-1;
+		} else if (c-1 >= 0 && dp[r][c-1] == dp[r][c]) {
+			c = c-1;
+		} else {
+			stk.push(v2[c]);
+			if (r > 0)
+				r = r-1;
+			if (c > 0)
+				c = c-1;
+		}
+
+		if(stk.size() == num)
+			break;
+	}
+	
+
+	for (;!stk.empty(); stk.pop())
+		cout << stk.top() << " ";
+
+	cout << endl;
+
+
+	/*
 	cout << "debug" << endl;
-	for(int i=0; i<m; i++) {
-		cout << dp[n-1][i] << " ";
+	for(int i=0; i<n; i++) {
+		for(int j=0; j<m; j++) {
+			cout << dp[i][j] << " ";
+		}
+		cout << endl;
 	}
 
 	cout << endl;
+	*/
 }
