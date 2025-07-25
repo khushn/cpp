@@ -20,9 +20,9 @@ signed main() {
 		int r = min(n-1, sum);
 		int c = sum - r;
 
-		cout << "r: " << r << ", c:" << c << endl;
+		//cout << "r: " << r << ", c:" << c << endl;
 		// this will have the sorted diagonal based on rank
-		map<pair<int, int>, pair<int, int>> mp;
+		multimap<pair<int, int>, pair<int, int>> mp;
 		while(c < n && r>=0) {
 			
 			int min = n+1;
@@ -39,8 +39,8 @@ signed main() {
 				}
 			}
 
-			mp[make_pair(grid[r][c], min)] = make_pair(r, c);
-
+			//mp[make_pair(grid[r][c], min)] = make_pair(r, c);
+			mp.insert({make_pair(grid[r][c], min), make_pair(r, c)});
 			c++;
 			r--;
 		}
@@ -66,7 +66,7 @@ signed main() {
 
 	// just print the output based on dp array rank (and following the rules of traversal right or below)
 	int r=0, c=0;
-	for(int i=0; i<2*n; i++) {
+	for(int i=1; i<2*n; i++) {
 		cout << grid[r][c];
 		if (r < n-1 && c < n-1) {
 			if (dp[r+1][c] < dp[r][c+1])
