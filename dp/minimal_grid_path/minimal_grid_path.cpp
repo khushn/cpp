@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -22,7 +23,14 @@ signed main() {
 
 		//cout << "r: " << r << ", c:" << c << endl;
 		// this will have the sorted diagonal based on rank
-		multimap<pair<int, int>, pair<int, int>> mp;
+		//multimap<pair<int, int>, pair<int, int>> mp;
+
+		int size = 2 * n - sum;
+		if (sum < n)
+			size = sum+1;
+
+		vector<vector<int>> vec(size, vector<int>(4));
+		int cnt = 0;
 		while(c < n && r>=0) {
 			
 			int min = n+1;
@@ -40,18 +48,22 @@ signed main() {
 			}
 
 			//mp[make_pair(grid[r][c], min)] = make_pair(r, c);
-			mp.insert({make_pair(grid[r][c], min), make_pair(r, c)});
+			//mp.insert({make_pair(grid[r][c], min), make_pair(r, c)});
+			vec[cnt] = {grid[r][c], min, r, c};
 			c++;
 			r--;
 		}
 
+		sort(vec.begin(), vec.end());
+
 		// iterate on the map, and assign ranks to diagonals
 		int rank = 1;
-		for( auto it = mp.begin(); it != mp.end(); it++) {
-			auto pr = it->second;
-			dp[pr.first][pr.second] = rank;
+		
+		for(const auto& v: vec) {
+			dp[v[2]][v[3]] = rank;
 			rank++;
 		}
+		
 	}
 
 	/*
