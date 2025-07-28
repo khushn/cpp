@@ -1,13 +1,25 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <map>
-#include <algorithm>
+#include <stack>
 
 using namespace std;
 
-signed main() {
+/*
+Came up with a new approach. Going from top-left most cell to bottom-right most cell
+0,0 to n-1, n-1. 
+Going each diagonal wise. Assifning 'A' or the least character to 1.
+Also ignoring a cell, if is top and left both are greater than 1.
 
+After that step. Just going in reverse direction of the dp matrix and populating a stack wherever 
+the dp cell == 1. 
+
+Then reverse printing the stack. 
+
+This worked! All test cases passed.
+*/
+
+signed main() {
 	int n;
 	cin >> n;
 
@@ -16,54 +28,54 @@ signed main() {
 		cin >> grid[i];
 
 	vector<vector<int>> dp(n, vector<int>(n));
-	dp[n-1][n-1] = 1;
-	for(int sum=2*n-2; sum>=0; sum--) {
+	dp[0][0] = 1;
+
+	for(int sum=1; sum<=2*n-1; sum++) {
 		int r = min(n-1, sum);
 		int c = sum - r;
 
-		//cout << "r: " << r << ", c:" << c << endl;
-		// this will have the sorted diagonal based on rank
-		//multimap<pair<int, int>, pair<int, int>> mp;
-
-		int size = 2 * n - sum;
-		if (sum < n)
-			size = sum+1;
-
-		vector<vector<int>> vec(size, vector<int>(4));
-		int cnt = 0;
+		int mini = 'Z' - 'A' + 1;
 		while(c < n && r>=0) {
-			
-			int min = n+1;
-			// right
-			if (c<n-1) {
-				min = dp[r][c+1];
+
+			bool top_bad = true;
+			if (r>0 && dp[r-1][c] == 1) {
+				top_bad = false;
 			}
 
-			// down
-			if (r< n-1) {
-				int tmp = dp[r+1][c];
-				if (tmp < min) {
-					min = tmp;
-				}
+			bool left_bad = true;
+			if (c>0 && dp[r][c-1] == 1) {
+				left_bad = false;
 			}
 
-			//mp[make_pair(grid[r][c], min)] = make_pair(r, c);
-			//mp.insert({make_pair(grid[r][c], min), make_pair(r, c)});
-			vec[cnt] = {grid[r][c], min, r, c};
+			if (top_bad && left_bad) {
+				c++;
+				r--;
+				continue;
+			}
+
+			int tmp = grid[r][c] - 'A' + 1;
+			if (mini > tmp)
+				mini = tmp;
+
+			dp[r][c] = tmp;
 			c++;
 			r--;
 		}
 
-		sort(vec.begin(), vec.end());
+		// repeat to assign 1 to min val
+		r = min(n-1, sum);
+		c = sum - r;
+		while(c < n && r>=0) {
+			if (dp[r][c] == 0) {
+				c++;
+				r--;
+				continue;
+			}
 
-		// iterate on the map, and assign ranks to diagonals
-		int rank = 1;
-		
-		for(const auto& v: vec) {
-			dp[v[2]][v[3]] = rank;
-			rank++;
+			dp[r][c] -= (mini - 1);
+			c++;
+			r--;
 		}
-		
 	}
 
 	/*
@@ -76,21 +88,25 @@ signed main() {
 	}
 	*/
 
-	// just print the output based on dp array rank (and following the rules of traversal right or below)
-	int r=0, c=0;
-	for(int i=1; i<2*n; i++) {
-		cout << grid[r][c];
-		if (r < n-1 && c < n-1) {
-			if (dp[r+1][c] < dp[r][c+1])
-				r++;
-			else 
-				c++;
-		} else {
-			if (r<n-1)
-				r++;
-			else
-				c++;
-		}
+	// gp back from destination in the dp matrix to find a path and put it in the stack
+	stack<char> stk;
+	int r = n-1;
+	int c = n-1;
+	for(int i=0; i<2*n-1; i++) {
+		if (dp[r][c] == 1)
+			stk.push(grid[r][c]);
+
+		if (r> 0 && dp[r-1][c] == 1)
+			r--;
+		else if (c>0 && dp[r][c-1] == 1)
+			c--;
 	}
+
+	while(!stk.empty()) {
+		cout << stk.top();
+		stk.pop();
+	}
+
 	cout << endl;
+
 }
