@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <set>
 #include <queue>
 
 using namespace std;
@@ -37,10 +36,10 @@ signed main() {
 	*/
 
 	vector<int> unique_graph_nodes;
-	set<int> nodes_used;
+	vector<bool> visited(n+1);
 	for(int i=1; i<=n; i++) {
 
-		if (nodes_used.find(i) != nodes_used.end())
+		if (visited[i])
 			continue;
 
 		unique_graph_nodes.push_back(i);
@@ -51,10 +50,10 @@ signed main() {
 			int nd = q.front();
 			q.pop();
 
-			if (nodes_used.find(nd) != nodes_used.end())
+			if (visited[nd])
 				continue;
 			
-			nodes_used.insert(nd);
+			visited[nd] = true;
 
 			vector<int> child_nodes = graph[nd];
 			for (int ch: child_nodes)
