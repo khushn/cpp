@@ -12,7 +12,7 @@ Maintain a visited list, to process fast
 
 const int N = 1e5+1;
 vector<int> graph[N];
-//vector<bool> visited(N);
+vector<bool> visited(N);
 //map<int, int> g_portion;
 
 vector<int> g_portion(N);
@@ -20,6 +20,7 @@ vector<int> g_portion(N);
 
 bool find_cycle(int nd1) {
 
+	visited[nd1] = true;
 
 	for(int nd2: graph[nd1]) {
 
@@ -67,9 +68,10 @@ bool find_cycle(int nd1) {
 			return true;			
 		}
 
-		
-		if (find_cycle(nd2))
-			return true;
+		if (!visited[nd2]) {
+			if (find_cycle(nd2))
+				return true;
+		}
 
 		g_portion[nd1]=0;
 		//cout << "------ erasing for " << nd1 << endl;
@@ -92,6 +94,9 @@ signed main() {
 	for(int i=1; i<=n; i++) {
 
 		//cout << "coming in for node " << i << endl;
+
+		if (visited[i])
+			continue;
 
 		bool found = find_cycle(i);
 		if (found)
