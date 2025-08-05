@@ -10,10 +10,12 @@ Need to use DFS for this (although I am prefering BFS for all graph problems so 
 Maintain a visited list, to process fast
 */
 
-const int N = 10e5+1;
+const int N = 1e5+1;
 vector<int> graph[N];
-vector<bool> visited(N);
-map<int, int> g_portion;
+//vector<bool> visited(N);
+//map<int, int> g_portion;
+
+vector<int> g_portion(N);
 
 
 bool find_cycle(int nd1) {
@@ -21,15 +23,23 @@ bool find_cycle(int nd1) {
 
 	for(int nd2: graph[nd1]) {
 
+		/*
 		auto it = g_portion.find(nd2);
 		if (it != g_portion.end() && it->second == nd1)
 			continue;
 
 		g_portion[nd1] = nd2;
+		*/
+
+		if (g_portion[nd2] == nd1)
+			continue;
 		
-		cout << nd1 << "->" << nd2 << endl;
+		g_portion[nd1] = nd2;
+
+		//cout << nd1 << "->" << nd2 << endl;
 		
-		if (g_portion.find(nd2) != g_portion.end()) {		
+		//if (g_portion.find(nd2) != g_portion.end()) {	
+		if (g_portion[nd2] != 0) {		
 			// found cycle !!
 			
 			/*
@@ -39,6 +49,7 @@ bool find_cycle(int nd1) {
 			}
 			*/
 		
+			
 			vector<int> print_vec;
 			print_vec.push_back(nd2);
 			int cur_node = g_portion[nd2];
@@ -52,6 +63,7 @@ bool find_cycle(int nd1) {
 			for(int k: print_vec)
 				cout << k << " ";
 			cout << endl;
+			
 			return true;			
 		}
 
@@ -59,8 +71,8 @@ bool find_cycle(int nd1) {
 		if (find_cycle(nd2))
 			return true;
 
-		g_portion.erase(nd1);
-		cout << "------ erasing for " << nd1 << endl;
+		g_portion[nd1]=0;
+		//cout << "------ erasing for " << nd1 << endl;
 	}
 	return false;
 }
@@ -79,7 +91,7 @@ signed main() {
 
 	for(int i=1; i<=n; i++) {
 
-		cout << "coming in for node " << i << endl;
+		//cout << "coming in for node " << i << endl;
 
 		bool found = find_cycle(i);
 		if (found)
@@ -87,7 +99,7 @@ signed main() {
 
 		//g_portion.clear();
 
-		cout << "=====" << endl;
+		// cout << "=====" << endl;
 
 	}
 	
