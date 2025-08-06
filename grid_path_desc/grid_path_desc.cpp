@@ -144,6 +144,21 @@ signed main() {
 					continue;
 
 
+				// check bottom row, in this case to the right must be filled previously
+				prev_filled = true;
+				
+				if ( x1 == GRID_SIZE - 1) {
+					for (int yy = y1+1; yy<=GRID_SIZE-1; yy++) {
+						int s1 = co_ord_to_seq(x1, yy);
+						if (!is_bit_set(route, s1 - 1)) {
+							prev_filled = false;
+							break;
+						}
+					}
+				}
+
+				if (!prev_filled)
+					continue;
 
 				int seq = co_ord_to_seq(x1, y1);
 				if (!is_bit_set (route, seq-1)) {
