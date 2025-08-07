@@ -1,0 +1,99 @@
+--- after step : 1 size of new_cur_pos_list: 2
+--- after step : 2 size of new_cur_pos_list: 4
+--- after step : 3 size of new_cur_pos_list: 10
+--- after step : 4 size of new_cur_pos_list: 22
+--- after step : 5 size of new_cur_pos_list: 52
+--- after step : 6 size of new_cur_pos_list: 121
+--- after step : 7 size of new_cur_pos_list: 283
+--- after step : 8 size of new_cur_pos_list: 647
+--- after step : 9 size of new_cur_pos_list: 1381
+--- after step : 10 size of new_cur_pos_list: 2870
+--- after step : 11 size of new_cur_pos_list: 5377
+--- after step : 12 size of new_cur_pos_list: 10347
+--- after step : 13 size of new_cur_pos_list: 17843
+--- after step : 14 size of new_cur_pos_list: 32254
+--- after step : 15 size of new_cur_pos_list: 51736
+--- after step : 16 size of new_cur_pos_list: 87526
+--- after step : 17 size of new_cur_pos_list: 129871
+--- after step : 18 size of new_cur_pos_list: 203786
+--- after step : 19 size of new_cur_pos_list: 280179
+--- after step : 20 size of new_cur_pos_list: 407131
+--- after step : 21 size of new_cur_pos_list: 522410
+--- after step : 22 size of new_cur_pos_list: 713019
+--- after step : 23 size of new_cur_pos_list: 871066
+--- after step : 24 size of new_cur_pos_list: 1141632
+--- after step : 25 size of new_cur_pos_list: 1353206
+--- after step : 26 size of new_cur_pos_list: 1730838
+--- after step : 27 size of new_cur_pos_list: 2011080
+--- after step : 28 size of new_cur_pos_list: 2535530
+--- after step : 29 size of new_cur_pos_list: 2912755
+--- after step : 30 size of new_cur_pos_list: 3630202
+--- after step : 31 size of new_cur_pos_list: 4130365
+--- after step : 32 size of new_cur_pos_list: 5045937
+--- after step : 33 size of new_cur_pos_list: 5635555
+--- after step : 34 size of new_cur_pos_list: 6621840
+--- after step : 35 size of new_cur_pos_list: 7136747
+--- after step : 36 size of new_cur_pos_list: 7842366
+--- after step : 37 size of new_cur_pos_list: 8008530
+--- after step : 38 size of new_cur_pos_list: 7982653
+--- after step : 39 size of new_cur_pos_list: 7582519
+--- after step : 40 size of new_cur_pos_list: 6655781
+--- after step : 41 size of new_cur_pos_list: 5713118
+--- after step : 42 size of new_cur_pos_list: 4297776
+--- after step : 43 size of new_cur_pos_list: 3062745
+--- after step : 44 size of new_cur_pos_list: 2035869
+x: 1, y: 3, count: 21260
+x: 1, y: 5, count: 28401
+x: 2, y: 0, count: 9257
+x: 2, y: 2, count: 18088
+x: 2, y: 4, count: 23681
+x: 3, y: 1, count: 35653
+x: 3, y: 3, count: 43228
+x: 3, y: 5, count: 41138
+x: 4, y: 0, count: 206980
+x: 4, y: 2, count: 79716
+x: 4, y: 4, count: 44980
+x: 5, y: 1, count: 227563
+x: 5, y: 3, count: 92449
+x: 5, y: 5, count: 61099
+x: 6, y: 0, count: 827718
+x: 6, y: 2, count: 257882
+x: 6, y: 4, count: 16776
+--- after step : 45 size of new_cur_pos_list: 939837
+x: 1, y: 2, count: 6366
+x: 1, y: 4, count: 6322
+x: 2, y: 1, count: 6366
+x: 2, y: 3, count: 7750
+x: 2, y: 5, count: 6224
+x: 3, y: 0, count: 17687
+x: 3, y: 2, count: 20446
+x: 3, y: 4, count: 11402
+x: 4, y: 1, count: 42381
+x: 4, y: 3, count: 22716
+x: 4, y: 5, count: 11826
+x: 5, y: 0, count: 333080
+x: 5, y: 2, count: 54857
+x: 5, y: 4, count: 14044
+x: 6, y: 1, count: 358460
+x: 6, y: 3, count: 19910
+--- after step : 46 size of new_cur_pos_list: 662506
+x: 1, y: 3, count: 2032
+x: 1, y: 5, count: 2782
+x: 2, y: 2, count: 1812
+x: 2, y: 4, count: 2162
+x: 3, y: 1, count: 2408
+x: 3, y: 3, count: 4578
+x: 3, y: 5, count: 4604
+x: 4, y: 0, count: 29129
+x: 4, y: 2, count: 10322
+x: 4, y: 4, count: 4576
+x: 5, y: 1, count: 25021
+x: 5, y: 3, count: 13108
+x: 5, y: 5, count: 7314
+x: 6, y: 0, count: 518390
+x: 6, y: 2, count: 34268
+--- after step : 47 size of new_cur_pos_list: 88418
+x: 5, y: 0, count: 45647
+x: 6, y: 1, count: 42771
+--- after step : 48 size of new_cur_pos_list: 88418
+x: 6, y: 0, count: 88418
