@@ -3,6 +3,8 @@
 #include <string>
 #include <tuple>
 #include <map>
+//#include <queue>
+
 /*
 
 Date 8/Aug/2025
@@ -79,6 +81,11 @@ pair<int, ulong> arr1[ARR_SIZE];
 pair<int, ulong> arr2[ARR_SIZE];
 															
 									
+int grid[GRID_SIZE][GRID_SIZE];
+
+// returns true if path has cycle
+bool path_has_cycle(ulong p);
+
 
 signed main() {
 	/*
@@ -317,6 +324,14 @@ signed main() {
 						}
 					}
 					*/
+
+
+					
+					// Approach 5: Check for cycle (some portions not reachable from dest)
+					
+
+					if (path_has_cycle(new_route))
+						can_add = false;
 					
 
 						
@@ -366,4 +381,69 @@ signed main() {
 
 }
 
+// a path length which wont exist
+const int INFINITY = 99999; 
 
+int qu[1000][3];
+
+// returns true if path has cycle
+bool path_has_cycle(ulong p) {
+
+	// step 1 populate grid
+	int path_length = 0;
+	for(int i=0; i<GRID_SIZE; i++) {
+		for(int j=0; j<GRID_SIZE; j++) {
+			int s = co_ord_to_seq(i, j);
+			if (is_bit_set(p, s-1)) {
+				// boundary of path
+				grid[i][j] = -1; 
+				path_length++;
+			}
+			else
+				grid[i][j] = INFINITY;
+		}
+	}
+
+	// step 2 startng from dest (6, 0), see if all nodes reachable apart from path steps
+	// i.e. no cycles
+	grid[GRID_SIZE-1][0] = 0;
+	
+	qu[0][0] = GRID_SIZE-1;
+	qu[0][1] = 0;
+	qu[0][2] = 0;
+	int qi = 0;
+	int qsize = 1;
+	while(qi < qsize){
+		
+		int x = qu[qi][0];
+		int y = qu[qi][1];
+		int w = qu[qi][2];
+
+		for(auto dir : dirs) {
+			int x1 = x + dir[0];
+			int y1 = y + dir[1];
+			if (x1 < 0 || y1 <  0 || x1 > GRID_SIZE - 1 || y1 > GRID_SIZE - 1 || grid[x1][y1] == -1)
+				continue;
+
+			int w1 = w+1;
+			if (grid[x1][y1] > w1) {
+				grid[x1][y1] = w1;
+				qu[qsize][0] = x1;
+				qu[qsize][1] = y1;
+				qu[qsize][2] = w1;
+				qsize++;
+			}
+		}
+		qi++;
+	}
+
+	for(int i=0; i<GRID_SIZE; i++) {
+		for(int j=0; j<GRID_SIZE; j++) {
+			if (grid[i][j] == INFINITY)
+				return true;
+		}
+	}
+
+
+	return false;
+}

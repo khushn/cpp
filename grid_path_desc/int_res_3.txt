@@ -1,0 +1,68 @@
+--- after step : 1 size of arr2: 2
+--- after step : 2 size of arr2: 4
+--- after step : 3 size of arr2: 10
+--- after step : 4 size of arr2: 22
+--- after step : 5 size of arr2: 52
+--- after step : 6 size of arr2: 121
+--- after step : 7 size of arr2: 283
+--- after step : 8 size of arr2: 643
+--- after step : 9 size of arr2: 1359
+--- after step : 10 size of arr2: 2778
+--- after step : 11 size of arr2: 5053
+--- after step : 12 size of arr2: 9370
+--- after step : 13 size of arr2: 15199
+--- after step : 14 size of arr2: 25848
+--- after step : 15 size of arr2: 37474
+--- after step : 16 size of arr2: 58226
+--- after step : 17 size of arr2: 75029
+--- after step : 18 size of arr2: 105874
+--- after step : 19 size of arr2: 122515
+--- after step : 20 size of arr2: 159998
+--- after step : 21 size of arr2: 171304
+--- after step : 22 size of arr2: 211917
+--- after step : 23 size of arr2: 215926
+--- after step : 24 size of arr2: 258016
+--- after step : 25 size of arr2: 256763
+--- after step : 26 size of arr2: 300556
+--- after step : 27 size of arr2: 296365
+--- after step : 28 size of arr2: 341121
+--- after step : 29 size of arr2: 333409
+--- after step : 30 size of arr2: 375000
+--- after step : 31 size of arr2: 361314
+--- after step : 32 size of arr2: 394325
+--- after step : 33 size of arr2: 372352
+--- after step : 34 size of arr2: 392337
+--- after step : 35 size of arr2: 360763
+--- after step : 36 size of arr2: 367212
+--- after step : 37 size of arr2: 329716
+--- after step : 38 size of arr2: 320803
+--- after step : 39 size of arr2: 283435
+--- after step : 40 size of arr2: 257937
+--- after step : 41 size of arr2: 224889
+--- after step : 42 size of arr2: 184959
+--- after step : 43 size of arr2: 163636
+--- after step : 44 size of arr2: 128391
+x: 2, y: 0, count: 9257
+x: 3, y: 1, count: 9166
+x: 4, y: 0, count: 19226
+x: 4, y: 2, count: 7433
+x: 5, y: 1, count: 34410
+x: 5, y: 3, count: 7884
+x: 6, y: 2, count: 24239
+x: 6, y: 4, count: 16776
+--- after step : 45 size of arr2: 122558
+x: 3, y: 0, count: 17687
+x: 4, y: 1, count: 11442
+x: 5, y: 0, count: 30103
+x: 5, y: 2, count: 14358
+x: 6, y: 1, count: 29058
+x: 6, y: 3, count: 19910
+--- after step : 46 size of arr2: 88418
+x: 4, y: 0, count: 29129
+x: 5, y: 1, count: 25021
+x: 6, y: 2, count: 34268
+--- after step : 47 size of arr2: 88418
+x: 5, y: 0, count: 45647
+x: 6, y: 1, count: 42771
+--- after step : 48 size of arr2: 88418
+x: 6, y: 0, count: 88418
