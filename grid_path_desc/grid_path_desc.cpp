@@ -3,7 +3,23 @@
 #include <string>
 #include <tuple>
 #include <map>
+/*
 
+Date 8/Aug/2025
+
+New ideas:
+
+1. Reuse the two vectors, as copying could be costly. Ideally use static sized arrays with indices.
+
+2. Cycle detection. See if all portions of the grid are reachable from the destination (6, 0) after every move. 
+   This can be done in O(50) so should save time. Needs to be verified. 
+   Use a static 2d array for this. 
+
+
+3. Try the u pattern RDDLU etc (filter out the bad ones)
+   (Do this if above 2 don't show sufficient improvements)
+
+*/
 #define ulong unsigned long long
 
 using namespace std;
@@ -54,7 +70,14 @@ vector<vector<pair<int, int>>> check_cells = { {{6, 0} },
 // keep till 3 prev steps only
 vector<vector<pair<int, int>>> check_cells = { {{6, 0} },
 									{ {5, 0}, {6, 1} },
-									{ {4, 0}, {5, 1}, {6, 2} } };									
+									{ {4, 0}, {5, 1}, {6, 2} } };
+
+
+const int ARR_SIZE = 1e7;									
+
+pair<int, ulong> arr1[ARR_SIZE];	
+pair<int, ulong> arr2[ARR_SIZE];
+															
 									
 
 signed main() {
@@ -91,15 +114,26 @@ signed main() {
 	string input;
 	cin >> input;
 
+	/*
 	vector<pair<int, ulong>> cur_pos_list;
 	cur_pos_list.push_back(make_pair(1, 1ull<<0));
+	*/
+	
+	
+	pair<int, ulong> *a1 = arr1;
+	pair<int, ulong> *a2 = arr2;
+	a1[0] = make_pair(1, 1ull<<0);
+	int a1_end = 1;
+	int a2_end = 0;
+
 
 	for(int s=1; s<=NUM_STEPS; s++) {
 		int ch = input[s-1];
 
-		vector<pair<int, ulong>> new_cur_pos_list;
+		// vector<pair<int, ulong>> new_cur_pos_list;
 		// for each cur position
-		for(auto p: cur_pos_list) {
+		for(int ind=0; ind < a1_end; ind++) {
+			auto p = a1[ind];
 			int x, y;
 			tie(x, y) = seq_to_co_ord(p.first);
 			ulong route = p.second;
@@ -286,8 +320,10 @@ signed main() {
 					
 
 						
-					if (can_add)
-						new_cur_pos_list.push_back(make_pair(seq, new_route));
+					if (can_add) {
+						// new_cur_pos_list.push_back(make_pair(seq, new_route));
+						a2[a2_end++] = make_pair(seq, new_route);
+					}
 				}
 			}
 			
@@ -295,7 +331,7 @@ signed main() {
 			
 		}
 
-		cout << "--- after step : " << s << " size of new_cur_pos_list: " << new_cur_pos_list.size() << endl;
+		cout << "--- after step : " << s << " size of arr2: " << a2_end << endl;
 		
 		/*		
 		for(auto p: new_cur_pos_list) {
@@ -307,7 +343,8 @@ signed main() {
 		
 		if (s >= NUM_STEPS - 4) {
 			map<pair<int, int>, int> count_map;
-			for(auto p: new_cur_pos_list) {
+			for(int i=0; i< a2_end; i++) {
+				auto p = a2[i];
 				int x, y;
 				tie(x, y) = seq_to_co_ord(p.first);
 				count_map[make_pair(x, y)] += 1;
@@ -318,8 +355,12 @@ signed main() {
 		}
 		
 		
-		
-		cur_pos_list = new_cur_pos_list;
+		// swap the pointers and index counts at a low cost
+		auto tmp = a1;
+		a1 = a2;
+		a2 = tmp;
+		a1_end = a2_end;
+		a2_end = 0;
 	}
 
 
