@@ -1,0 +1,99 @@
+--- after step : 1 size of arr2: 2
+--- after step : 2 size of arr2: 4
+--- after step : 3 size of arr2: 10
+--- after step : 4 size of arr2: 22
+--- after step : 5 size of arr2: 52
+--- after step : 6 size of arr2: 119
+--- after step : 7 size of arr2: 267
+--- after step : 8 size of arr2: 579
+--- after step : 9 size of arr2: 1167
+--- after step : 10 size of arr2: 2263
+--- after step : 11 size of arr2: 3933
+--- after step : 12 size of arr2: 7115
+--- after step : 13 size of arr2: 11682
+--- after step : 14 size of arr2: 20067
+--- after step : 15 size of arr2: 30736
+--- after step : 16 size of arr2: 49519
+--- after step : 17 size of arr2: 70767
+--- after step : 18 size of arr2: 106324
+--- after step : 19 size of arr2: 141676
+--- after step : 20 size of arr2: 198788
+--- after step : 21 size of arr2: 248148
+--- after step : 22 size of arr2: 329094
+--- after step : 23 size of arr2: 392243
+--- after step : 24 size of arr2: 500195
+--- after step : 25 size of arr2: 579181
+--- after step : 26 size of arr2: 720157
+--- after step : 27 size of arr2: 818412
+--- after step : 28 size of arr2: 1001826
+--- after step : 29 size of arr2: 1127034
+--- after step : 30 size of arr2: 1363174
+--- after step : 31 size of arr2: 1519031
+--- after step : 32 size of arr2: 1807408
+--- after step : 33 size of arr2: 1978896
+--- after step : 34 size of arr2: 2283726
+--- after step : 35 size of arr2: 2422605
+--- after step : 36 size of arr2: 2650143
+--- after step : 37 size of arr2: 2679087
+--- after step : 38 size of arr2: 2707693
+--- after step : 39 size of arr2: 2568021
+--- after step : 40 size of arr2: 2348090
+--- after step : 41 size of arr2: 2047642
+--- after step : 42 size of arr2: 1663280
+--- after step : 43 size of arr2: 1265873
+--- after step : 44 size of arr2: 912264
+x: 1, y: 3, count: 11415
+x: 1, y: 5, count: 11735
+x: 2, y: 0, count: 9257
+x: 2, y: 2, count: 11437
+x: 2, y: 4, count: 13132
+x: 3, y: 1, count: 20553
+x: 3, y: 3, count: 27244
+x: 3, y: 5, count: 25366
+x: 4, y: 0, count: 106602
+x: 4, y: 2, count: 46005
+x: 4, y: 4, count: 25137
+x: 5, y: 1, count: 128299
+x: 5, y: 3, count: 55654
+x: 5, y: 5, count: 25221
+x: 6, y: 0, count: 248082
+x: 6, y: 2, count: 130349
+x: 6, y: 4, count: 16776
+--- after step : 45 size of arr2: 513707
+x: 1, y: 2, count: 2640
+x: 1, y: 4, count: 3909
+x: 2, y: 1, count: 1770
+x: 2, y: 3, count: 4451
+x: 2, y: 5, count: 4248
+x: 3, y: 0, count: 17687
+x: 3, y: 2, count: 13150
+x: 3, y: 4, count: 7075
+x: 4, y: 1, count: 24191
+x: 4, y: 3, count: 15815
+x: 4, y: 5, count: 8584
+x: 5, y: 0, count: 174207
+x: 5, y: 2, count: 34871
+x: 5, y: 4, count: 8730
+x: 6, y: 1, count: 172469
+x: 6, y: 3, count: 19910
+--- after step : 46 size of arr2: 366394
+x: 1, y: 3, count: 1688
+x: 1, y: 5, count: 1508
+x: 2, y: 2, count: 1596
+x: 2, y: 4, count: 1720
+x: 3, y: 1, count: 1926
+x: 3, y: 3, count: 4292
+x: 3, y: 5, count: 3866
+x: 4, y: 0, count: 29129
+x: 4, y: 2, count: 8738
+x: 4, y: 4, count: 3582
+x: 5, y: 1, count: 25021
+x: 5, y: 3, count: 11410
+x: 5, y: 5, count: 4194
+x: 6, y: 0, count: 233456
+x: 6, y: 2, count: 34268
+--- after step : 47 size of arr2: 88418
+x: 5, y: 0, count: 45647
+x: 6, y: 1, count: 42771
+--- after step : 48 size of arr2: 88418
+x: 6, y: 0, count: 88418

@@ -70,6 +70,7 @@ map<int, ulong> dir_map = {
 
 // disallowed moves as these result in an unreachable hole (cell) in the path
 string disallowed[] = {
+	// pattern 1 (smallest cycle)
 	// anticlockwise
 	"LLDDRR", "DLDDRR",
 	"LLDDRD", "DLDDRD",
@@ -88,7 +89,19 @@ string disallowed[] = {
 	"LLUURR", "ULUURR",
 	"LLUURU", "ULUURU",
 	"UURRDD", "RURRDD",
-	"UURRDR", "RURRDR"
+	"UURRDR", "RURRDR",
+
+	// pattern 2 (bigger cycle)
+	// anticlockwise
+	"DDRRRUUULL",
+	"RRUUULLLDD",
+	"UULLLDDDRR",
+	"LLDDDRRRUU",
+	// clockwise
+	"DDLLLUUURR",
+	"LLUUURRRDD",
+	"RRDDDLLLUU",
+	"UURRRDDDLL",
 	
 };
 
@@ -168,11 +181,11 @@ signed main() {
 			char ch = str[j];
 			enc = (enc<<2)|dir_map[ch];
 		}
-		//cout << "encoding: " << str << ", as: len = " << sz << ", enc = " << binary_print(enc) << endl;
+		cout << "encoding: " << str << ", as: len = " << sz << ", enc = " << binary_print(enc) << endl;
 		disallowed_enc.push_back(make_pair(sz, enc));
 	}
 
-	// return 0;
+	//return 0;
 
 
 
@@ -405,7 +418,7 @@ signed main() {
 					ulong dir_encode = dir_map[dir[2]];
 					ulong upd_recent_dir = (recent_dir<<2)|dir_encode;
 
-					if (s>6 && path_creates_holes(upd_recent_dir)) {
+					if (s>=6 && path_creates_holes(upd_recent_dir)) {
 						can_add = false;
 					}
 						
