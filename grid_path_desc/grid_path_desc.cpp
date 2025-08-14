@@ -27,8 +27,9 @@ New ideas:
 using namespace std;
 
 
-
+// const int NUM_STEPS = 5;
 const int NUM_STEPS = 48;
+
 const int GRID_SIZE = 7;
 
 int co_ord_to_seq(int x, int y) {
@@ -56,8 +57,42 @@ string binary_print(ulong v) {
 
 // all four directions
 // the extra two coordinates are for the 2nd cell in the same direction
-vector<vector<int>> dirs = {{0,1, 0, 2}, {0, -1, 0, -2}, {1, 0, 2, 0}, {-1, 0, -2, 0}};
+// vector<vector<int>> dirs = {{0,1, 0, 2}, {0, -1, 0, -2}, {1, 0, 2, 0}, {-1, 0, -2, 0}};
+vector<vector<int>> dirs = {{0,1, 'R'}, {0, -1, 'L'}, {1, 0, 'D'}, {-1, 0, 'U'}};
 
+
+map<int, ulong> dir_map = {
+	{'D', 0},
+	{'R', 1},
+	{'U', 2},
+	{'L', 3}, 
+};
+
+// disallowed moves as these result in an unreachable hole (cell) in the path
+string disallowed[] = {
+	// anticlockwise
+	"LLDDRR", "DLDDRR",
+	"LLDDRD", "DLDDRD",
+	"DDRRUU", "RDRRUU",
+	"DDRRUR", "RDRRUR",
+	"RRUULL", "URUULL",
+	"RRUULU", "URUULU",
+	"UULLDD", "LULLDD",
+	"UULLDL", "LULLDL",
+
+	// clockwise
+	"RRDDLL", "DRDDLL",
+	"RRDDLD", "DRDDLD",
+	"DDLLUU", "LDLLUU",
+	"DDLLUL", "LDLLUL",
+	"LLUURR", "ULUURR",
+	"LLUURU", "ULUURU",
+	"UURRDD", "RURRDD",
+	"UURRDR", "RURRDR"
+	
+};
+
+vector<pair<int, ulong>> disallowed_enc;
 // not to cover all end cells
 /*
 vector<vector<pair<int, int>>> check_cells = { {{6, 0} },
@@ -77,14 +112,20 @@ vector<vector<pair<int, int>>> check_cells = { {{6, 0} },
 
 const int ARR_SIZE = 1e7;									
 
-pair<int, ulong> arr1[ARR_SIZE];	
-pair<int, ulong> arr2[ARR_SIZE];
+// to store all the moves (to implement the 3rd idea)
+tuple<int, ulong, ulong> arr1[ARR_SIZE];	
+tuple<int, ulong, ulong> arr2[ARR_SIZE];
+
+
 															
 									
 int grid[GRID_SIZE][GRID_SIZE];
 
 // returns true if path has cycle
 bool path_has_cycle(ulong p);
+
+// returns true if the last few steps of a path, create unreachable hole
+bool path_creates_holes(ulong p);
 
 
 signed main() {
@@ -118,6 +159,23 @@ signed main() {
 	return 0;
 	*/
 
+	int len = sizeof(disallowed) / sizeof(disallowed[0]);
+	for(int i=0; i<len; i++) {
+		string str = disallowed[i];
+		int sz = str.length();
+		ulong enc = 0ull;
+		for(int j=0; j<sz; j++) {
+			char ch = str[j];
+			enc = (enc<<2)|dir_map[ch];
+		}
+		//cout << "encoding: " << str << ", as: len = " << sz << ", enc = " << binary_print(enc) << endl;
+		disallowed_enc.push_back(make_pair(sz, enc));
+	}
+
+	// return 0;
+
+
+
 	string input;
 	cin >> input;
 
@@ -127,9 +185,9 @@ signed main() {
 	*/
 	
 	
-	pair<int, ulong> *a1 = arr1;
-	pair<int, ulong> *a2 = arr2;
-	a1[0] = make_pair(1, 1ull<<0);
+	tuple<int, ulong, ulong> *a1 = arr1;
+	tuple<int, ulong, ulong> *a2 = arr2;
+	a1[0] = make_tuple(1, 1ull<<0, 0ull<<0);
 	int a1_end = 1;
 	int a2_end = 0;
 
@@ -142,8 +200,16 @@ signed main() {
 		for(int ind=0; ind < a1_end; ind++) {
 			auto p = a1[ind];
 			int x, y;
-			tie(x, y) = seq_to_co_ord(p.first);
-			ulong route = p.second;
+			tie(x, y) = seq_to_co_ord(get<0>(p));
+			ulong route = get<1>(p);
+			ulong recent_dir = get<2>(p);
+
+			/*
+			if (s > 20 && s < 35) {
+				if (path_has_cycle(route))
+					continue;
+			}
+			*/
 
 			
 			// cout << "x: " << x << ", y: " << y << endl;
@@ -326,18 +392,27 @@ signed main() {
 					*/
 
 
-					
+					/*
+					//takes too much time
 					// Approach 5: Check for cycle (some portions not reachable from dest)
 					
 
 					if (path_has_cycle(new_route))
 						can_add = false;
-					
 
+					*/
+					
+					ulong dir_encode = dir_map[dir[2]];
+					ulong upd_recent_dir = (recent_dir<<2)|dir_encode;
+
+					if (s>6 && path_creates_holes(upd_recent_dir)) {
+						can_add = false;
+					}
 						
 					if (can_add) {
+						
 						// new_cur_pos_list.push_back(make_pair(seq, new_route));
-						a2[a2_end++] = make_pair(seq, new_route);
+						a2[a2_end++] = make_tuple(seq, new_route, upd_recent_dir);
 					}
 				}
 			}
@@ -348,20 +423,22 @@ signed main() {
 
 		cout << "--- after step : " << s << " size of arr2: " << a2_end << endl;
 		
-		/*		
-		for(auto p: new_cur_pos_list) {
+		/*	
+		for(int i=0; i< a2_end; i++) {
+			auto p = a2[i];
 			int x, y;
-			tie(x, y) = seq_to_co_ord(p.first);
-			cout << "pos: (" << x << ", " << y << "), bitset: " << binary_print(p.second) << endl;
+			tie(x, y) = seq_to_co_ord(get<0>(p));
+			cout << "pos: (" << x << ", " << y << "), recent_dir: " << binary_print(get<2>(p)) << endl;
 		}
 		*/
+		
 		
 		if (s >= NUM_STEPS - 4) {
 			map<pair<int, int>, int> count_map;
 			for(int i=0; i< a2_end; i++) {
 				auto p = a2[i];
 				int x, y;
-				tie(x, y) = seq_to_co_ord(p.first);
+				tie(x, y) = seq_to_co_ord(get<0>(p));
 				count_map[make_pair(x, y)] += 1;
 			}
 			for (auto & it: count_map) {
@@ -379,12 +456,31 @@ signed main() {
 	}
 
 
+} 
+
+// returns true if the last few steps of a path, create unreachable hole
+bool path_creates_holes(ulong p) {
+	for(auto dis: disallowed_enc) {
+		int l = dis.first * 2;
+		ulong d = dis.second;
+
+		// l ending bits with 1
+		ulong mask = (1ull << l) - 1;
+		ulong t = p&mask;
+		if (t == d)
+			return true;
+	}
+
+	return false;
+
 }
 
 // a path length which wont exist
 const int INFINITY = 99999; 
 
 int qu[1000][3];
+
+int total_cells = GRID_SIZE * GRID_SIZE;
 
 // returns true if path has cycle
 bool path_has_cycle(ulong p) {
@@ -406,13 +502,14 @@ bool path_has_cycle(ulong p) {
 
 	// step 2 startng from dest (6, 0), see if all nodes reachable apart from path steps
 	// i.e. no cycles
-	grid[GRID_SIZE-1][0] = 0;
+	grid[GRID_SIZE-1][0] = 1;
 	
 	qu[0][0] = GRID_SIZE-1;
 	qu[0][1] = 0;
-	qu[0][2] = 0;
+	qu[0][2] = 1;
 	int qi = 0;
 	int qsize = 1;
+	int num_reachable = 1;
 	while(qi < qsize){
 		
 		int x = qu[qi][0];
@@ -422,28 +519,33 @@ bool path_has_cycle(ulong p) {
 		for(auto dir : dirs) {
 			int x1 = x + dir[0];
 			int y1 = y + dir[1];
-			if (x1 < 0 || y1 <  0 || x1 > GRID_SIZE - 1 || y1 > GRID_SIZE - 1 || grid[x1][y1] == -1)
+			if (x1 < 0 || y1 <  0 || x1 > GRID_SIZE - 1 || y1 > GRID_SIZE - 1 || grid[x1][y1] == -1 || grid[x1][y1] == 1)
 				continue;
 
-			int w1 = w+1;
-			if (grid[x1][y1] > w1) {
-				grid[x1][y1] = w1;
-				qu[qsize][0] = x1;
-				qu[qsize][1] = y1;
-				qu[qsize][2] = w1;
-				qsize++;
-			}
+			//int w1 = w+1;
+			
+			grid[x1][y1] = 1;
+			qu[qsize][0] = x1;
+			qu[qsize][1] = y1;
+			qu[qsize][2] = 1;
+			qsize++;
+			num_reachable++;
+			
 		}
 		qi++;
 	}
 
+	/*
 	for(int i=0; i<GRID_SIZE; i++) {
 		for(int j=0; j<GRID_SIZE; j++) {
 			if (grid[i][j] == INFINITY)
 				return true;
 		}
 	}
+	*/
 
-
-	return false;
+	if ( (num_reachable + path_length) < total_cells)
+		return true;
+	else
+		return false;
 }
