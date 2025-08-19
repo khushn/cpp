@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <climits>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ Algo:
 
 */
 
-const int INFINITY = 10000;
+const int INFINITY = INT_MAX;
 
 vector<vector<int>> dirs = {{0, 1, 'R'}, {1, 0, 'D'}, {0, -1, 'L'}, {-1, 0, 'U'}};
 
@@ -65,13 +66,14 @@ signed main() {
 	}
 	*/
 
+
 	// step 2 of algo (described on top of this file)
 	bool monster_far = false;
 	int mdist = INFINITY;
 	int ei = -1;
 	int ej = -1;
 	for(int i=0; i<n; i++) {
-
+		//cout << "step 2, i: " << i <<  endl;
 		if (i ==0 || i == n-1) {
 			for(int j=0; j<m; j++) {
 				if (psp[i][j] == INFINITY)
@@ -116,6 +118,8 @@ signed main() {
 			break;
 	}
 
+
+	//cout << "step 2 over" << endl;
 
 	if (monster_far) {
 		cout << "YES" << endl;
@@ -167,7 +171,8 @@ char reverse_direction(int ch) {
 	return '0'; // never reaches here
 }
 
-int distance_to_nearest_monster(int pr, int pc, int pdist) {	
+int distance_to_nearest_monster(int pr, int pc, int pdist) {
+	//cout << "distance_to_nearest_monster(), pr: " << pr << ", pc; " << pc << ", pdist: " << pdist << endl;
 	vector<vector<int>> psp(n, vector<int>(m, INFINITY));
 	psp[pr][pc] = 0;
 	queue<pair<int, int>> q;
