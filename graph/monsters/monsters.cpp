@@ -7,12 +7,13 @@
 using namespace std;
 
 /*
+Approach 2
 Algo:
-1. from player fill the matrix, with shortest no. of steps. Abandon a path, if meet a monster 
-   before reaching the edge.
-2. For each possible edge cell (i.e < INFINITY weight), try to reach any monster (and measure steps). 
-   Stop if monster found (or steps > player steps from the cell)
-3. We have a success case if the nearest monster is farther than the player. 
+1. Fill the graph with how many min steps it takes to get to the edge by any monster. In one-shot it will 
+account for all the monsters.
+2. Then check if the player has any path to edge in fewer steps than the monster. 
+    - Abandon and print "NO", if player stuck before moving to edge
+    - else print "YES" and pathrint te path
 
 */
 
@@ -21,7 +22,7 @@ const int INFINITY = INT_MAX;
 vector<vector<int>> dirs = {{0, 1, 'R'}, {1, 0, 'D'}, {0, -1, 'L'}, {-1, 0, 'U'}};
 
 void fill_with_shortest_path(int r, int c, vector<vector<int>> &psp);
-int distance_to_nearest_monster(int pr, int pc, int pdist);
+void fill_monster_weights(int mr, int mc, vector<vector<int>> &psp);
 char reverse_direction(int ch);
 
 int n, m;
@@ -32,6 +33,8 @@ signed main() {
 	cin >> n >> m;
 
 	int pr, pc, mr, mc;	
+	mr = -1;
+	mc = -1;
 	for(int i=0; i<n; i++) {
 		vector<int> row(m);
 		for(int j=0; j<m; j++) {
@@ -45,19 +48,19 @@ signed main() {
 			else if (ch == 'M') {
 				mr = i; 
 				mc = j;
-			}
+			}	
 		}
 		grid.push_back(row);
 	}
 
-	// player shortest path to edges
-	// grid 1 for player shortest path to edges
+	// step 1. Monster(s) shortest path to edges
 	vector<vector<int>> psp(n, vector<int>(m, INFINITY));
-	fill_with_shortest_path(pr, pc, psp);
+	fill_monster_weights(mr, mc, psp);
 	
+	//cout << "step 1 over" << endl;
 
 	/*
-	cout << "player costs" << endl;
+	cout << "monster edge costs" << endl;
 	for(int i=0; i<n; i++) {
 		for(int j=0; j<m; j++) {
 			cout << psp[i][j] << " ";
@@ -65,61 +68,50 @@ signed main() {
 		cout << endl;
 	}
 	*/
+	
 
 
 	// step 2 of algo (described on top of this file)
+	psp[pr][pc] = 0;
+	queue<pair<int, int>> q;
+	q.push(make_pair(pr, pc));
 	bool monster_far = false;
-	int mdist = INFINITY;
 	int ei = -1;
 	int ej = -1;
-	for(int i=0; i<n; i++) {
-		//cout << "step 2, i: " << i <<  endl;
-		if (i ==0 || i == n-1) {
-			for(int j=0; j<m; j++) {
-				if (psp[i][j] == INFINITY)
+	while (!q.empty()) {
+			auto p = q.front(); q.pop();
+			int i = p.first;
+			int j = p.second;
+
+			int d = psp[i][j];
+
+			// check if player is on any edge
+			if (i == 0 || i == n-1 || j == 0 || j == m-1) {
+				monster_far = true;
+				ei = i;
+				ej = j;
+				break;
+			}
+
+			for(auto dir: dirs) {
+				int ii = i + dir[0];
+				int jj = j + dir[1];
+
+				if (ii < 0 || ii >= n || jj < 0 || jj >= m || grid[ii][jj] == '#')
 					continue;
 
-				mdist = distance_to_nearest_monster(i, j, psp[i][j]);
-				// cout << "i: " << i << ", j: " << j << ", mdist: " << mdist << endl;
-				if (mdist > psp[i][j]) {
-					monster_far = true;
-					ei = i;
-					ej = j;
-					break;
+				int d2 = d + 1;
+				if (psp[ii][jj] > d2) {
+					psp[ii][jj] = d2;
+					q.push(make_pair(ii, jj));
 				}
 			}
-		} else {
-			if (psp[i][0] < INFINITY) {
-				mdist = distance_to_nearest_monster(i, 0, psp[i][0]);
-				// cout << "i: " << i << ", j: " << 0 << ", mdist: " << mdist << endl;
-				if (mdist > psp[i][0]) {
-					ei = i;
-					ej = 0;
-					monster_far = true;
-				}
-			}
-
-			if (psp[i][m-1] < INFINITY) {
-				if (!monster_far) {
-					mdist = distance_to_nearest_monster(i, m-1, psp[i][m-1]);
-					// cout << "i: " << i << ", j: " << m-1 << ", mdist: " << mdist << endl;
-				}
-				if (mdist > psp[i][m-1]) {
-					monster_far = true;
-					ei = i;
-					ej = m-1;
-				}
-			}
-
-			
-		}
-
-		if (monster_far)
-			break;
 	}
-
+	
 
 	//cout << "step 2 over" << endl;
+
+
 
 	if (monster_far) {
 		cout << "YES" << endl;
@@ -171,12 +163,14 @@ char reverse_direction(int ch) {
 	return '0'; // never reaches here
 }
 
-int distance_to_nearest_monster(int pr, int pc, int pdist) {
-	//cout << "distance_to_nearest_monster(), pr: " << pr << ", pc; " << pc << ", pdist: " << pdist << endl;
-	vector<vector<int>> psp(n, vector<int>(m, INFINITY));
-	psp[pr][pc] = 0;
+void fill_monster_weights(int mr, int mc, vector<vector<int>> &psp) {
+	
+	if (mr < 0 || mc < 0)
+		return;
+
+	psp[mr][mc] = 0;
 	queue<pair<int, int>> q;
-	q.push(make_pair(pr, pc));
+	q.push(make_pair(mr, mc));
 	while (!q.empty()) {
 			auto p = q.front(); q.pop();
 			int i = p.first;
@@ -188,48 +182,19 @@ int distance_to_nearest_monster(int pr, int pc, int pdist) {
 				int ii = i + dir[0];
 				int jj = j + dir[1];
 
-				if (ii < 0 || ii >= n || jj < 0 || jj >= m || grid[ii][jj] == '#' || grid[ii][jj] == 'P')
+				if (ii < 0 || ii >= n || jj < 0 || jj >= m || grid[ii][jj] == '#')
 					continue;
 
+				int d2 = d + 1;
 				if (grid[ii][jj] == 'M')
-					return d+1;
-
-				if ( d+1 > pdist )
-					return INFINITY;
-
-				int d2 = d + 1;
+					d2 = 0;
+				
 				if (psp[ii][jj] > d2) {
 					psp[ii][jj] = d2;
 					q.push(make_pair(ii, jj));
-				}				
+				}		
 			}
 	}
-	return INFINITY;
+	return;
 }
 
-void fill_with_shortest_path(int pr, int pc, vector<vector<int>> &psp) {
-	psp[pr][pc] = 0;
-	queue<pair<int, int>> q;
-	q.push(make_pair(pr, pc));
-	while (!q.empty()) {
-			auto p = q.front(); q.pop();
-			int i = p.first;
-			int j = p.second;
-
-			int d = psp[i][j];
-
-			for(auto dir: dirs) {
-				int ii = i + dir[0];
-				int jj = j + dir[1];
-
-				if (ii < 0 || ii >= n || jj < 0 || jj >= m || grid[ii][jj] == '#' || grid[ii][jj] == 'M')
-					continue;
-
-				int d2 = d + 1;
-				if (psp[ii][jj] > d2) {
-					psp[ii][jj] = d2;
-					q.push(make_pair(ii, jj));
-				}
-			}
-	}
-}
