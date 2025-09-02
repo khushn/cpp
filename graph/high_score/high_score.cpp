@@ -21,10 +21,10 @@ signed main() {
 
 
 	vector<int> max_scores(n+1, LONG_MIN);
-	queue<tuple<int, int, int>> q;
+	priority_queue<tuple<int, int, int>> q;
 	q.push(make_tuple(1, 0, 0));
 	while(!q.empty()) {
-		auto t = q.front(); q.pop();
+		auto t = q.top(); q.pop();
 		int n1 = get<0>(t);
 		int plen = get<1>(t);
 		int w = get<2>(t);
@@ -35,6 +35,9 @@ signed main() {
 			continue;
 		}
 		*/
+
+		if (n1 == n && w == LONG_MAX)
+			break;
 
 		
 		if (w > max_scores[n1]) {
