@@ -20,7 +20,7 @@ signed main() {
 	}
 
 
-	int max_score = LONG_MIN;
+	vector<int> max_scores(n+1, LONG_MIN);
 	queue<tuple<int, int, int>> q;
 	q.push(make_tuple(1, 0, 0));
 	while(!q.empty()) {
@@ -29,32 +29,43 @@ signed main() {
 		int plen = get<1>(t);
 		int w = get<2>(t);
 		//cout << "n1: " << n1 << ", plen: " << plen << ", w: " << w << endl;
+		/*
 		if (plen > n*3) {
 			// abandon this path 
 			continue;
 		}
+		*/
 
-		if (n1 == n) {
-			if (w > max_score) {
-				max_score = w;
-				//cout << "new max_score: " << max_score << ", plen: " << plen << endl;
+		
+		if (w > max_scores[n1]) {
+			if (plen > n) {
+				w = LONG_MAX;
 			}
+			max_scores[n1] = w;
+			// cout << "new max_scores[" << n1 << "] = " << w << ", plen: " << plen << endl;
 
-			if (w > 0 && plen >= n*2 ) {
-				cout << "-1" << endl;
-				return 0;
-			}
-			
+		} else {
+			continue;
 		}
+			
+		
 
 		for(auto p: graph[n1]) {
 			int n2 = p.first;
 			int w2 = p.second;
-			q.push(make_tuple(n2, plen+1, w+w2));			
+			int nw;
+			if (w == LONG_MAX)
+				nw = w;
+			else
+				nw = w + w2;
+			q.push(make_tuple(n2, plen+1, nw));			
 		}
 
 	}
 
-	cout << max_score << endl;
+	int res = max_scores[n];
+	if (res == LONG_MAX)
+		res = -1;
+	cout << res << endl;
 
 }
