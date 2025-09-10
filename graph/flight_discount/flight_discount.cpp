@@ -4,10 +4,25 @@
 //#include <priority_queue>
 #include <climits>
 #include <tuple>
+#include <algorithm>
 
 using namespace std;
 
 #define int long long
+
+
+// Comparator for priority_queue
+struct Compare {
+    bool operator()(const vector<int>& a, const vector<int>& b) const {
+        // Compare by 2nd value (index 1)
+        if (a[1] != b[1])
+            return a[1] < b[1]; // max-heap on 2nd value
+
+        // If 2nd values are equal, compare by 3rd value (index 2)
+        return a[2] < b[2]; // max-heap on 3rd value
+    }
+};
+
 
 signed main() {
 	int n, m;
@@ -19,11 +34,19 @@ signed main() {
 		graph[a].push_back(make_pair(b, -w));
 	}
 
+	for(int i=0; i<m; i++) {
+		vector<pair<int, int>> &sortvec = graph[i];
+		sort(sortvec.begin(), sortvec.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+        return a.second < b.second;  // ascending order
+    });
+	}
+
 
 	// dp array of min cost to any city
 	// sum and max(x)
 	vector<pair<int, int>> city_cost(n+1, {LONG_MIN, LONG_MIN}); 
-	priority_queue<vector<int>> q;
+	// priority_queue<vector<int>> q;
+	priority_queue<vector<int>, vector<vector<int>>, Compare> q;
 	//queue<tuple<int, int, int>> q;
 	// priority_queue<tuple<int,int,int>, vector<tuple<int,int,int>>, greater<tuple<int,int,int>>> q;
 
@@ -35,7 +58,7 @@ signed main() {
 		int n1 = t[0];		
 		int c = t[1];
 		int x = t[2];
-		int nn = t[3];
+		int nn = t[3];		
 
 		if (nn >= n)
 			continue;
@@ -56,12 +79,14 @@ signed main() {
 				c2 = c;
 			if (x > x2)
 				x2 = x;
-			cout << "assigning n1: " << n1 << ", c: " << c2 << ", x: " << x2 << endl;
+			// cout << "assigning n1: " << n1 << ", c: " << c2 << ", x: " << x2 << endl;
 			city_cost[n1] = make_pair(c2, x2);
 
 		}
 		
 
+		if (n1 == n)
+			continue;
 		
 		// now we know cost is less
 		// we can use it
